@@ -40,35 +40,35 @@ scroll-reveal animation and a data-driven project list.
 
 ```mermaid
 flowchart TD
-    A[Browser requests /] --> B[index.html served from Vercel CDN]
-    B --> C{{"Inline &lt;head&gt; script"}}
-    C -->|reads localStorage.theme| D[Sets data-theme on &lt;html&gt;<br/>BEFORE first paint]
-    D --> E[assets/style.css parsed<br/>tokens resolve for chosen theme]
-    E --> F[First Contentful Paint<br/>no theme flash]
+    A["Browser requests /"] --> B["index.html served from Vercel CDN"]
+    B --> C{{"Inline #lt;head#gt; script"}}
+    C -->|reads localStorage.theme| D["Sets data-theme on #lt;html#gt;<br/>BEFORE first paint"]
+    D --> E["assets/style.css parsed<br/>tokens resolve for chosen theme"]
+    E --> F["First Contentful Paint<br/>no theme flash"]
 
-    F --> G[assets/main.js — deferred by position]
-    G --> H[DOMContentLoaded]
+    F --> G["assets/main.js — loaded at end of body"]
+    G --> H["DOMContentLoaded"]
 
-    H --> I[renderProjects]
-    H --> J[initTheme]
-    H --> K[initTyped]
-    H --> L[initReveal]
-    H --> M[initNav]
-    H --> N[initCardGlow]
+    H --> I["renderProjects()"]
+    H --> J["initTheme()"]
+    H --> K["initTyped()"]
+    H --> L["initReveal()"]
+    H --> M["initNav()"]
+    H --> N["initCardGlow()"]
 
-    I --> I1[PROJECTS array → template strings<br/>→ one innerHTML write into #projects-grid]
-    J --> J1[Wire toggle → flip data-theme → persist]
-    K --> K1[setTimeout loop types/deletes role strings]
-    L --> L1[IntersectionObserver adds .in<br/>with staggered delay]
-    M --> M1[scroll listener → .stuck blur bar<br/>+ active section link]
-    N --> N1[Delegated pointermove → --mx/--my<br/>drives radial-gradient highlight]
+    I --> I1["PROJECTS array → template strings<br/>→ single innerHTML write into the grid"]
+    J --> J1["Wire toggle → flip data-theme → persist"]
+    K --> K1["Recursive setTimeout types/deletes role strings"]
+    L --> L1["IntersectionObserver adds .in<br/>with staggered delay, then unobserves"]
+    M --> M1["Scroll listener → blurred nav bar<br/>+ active section link"]
+    N --> N1["Delegated pointermove sets --mx/--my<br/>→ radial-gradient follows cursor"]
 ```
 
 ### Section map
 
 ```mermaid
 flowchart LR
-    Nav[Fixed nav<br/>blur on scroll] --> Home
+    Nav["Fixed nav, blurs on scroll"] --> Home
     subgraph Page["index.html — one document"]
         Home["#home<br/>hero + typed roles"]
         About["#about<br/>bio + stat tiles"]
@@ -78,8 +78,8 @@ flowchart LR
         Contact["#contact<br/>mailto + socials"]
     end
     Home --> About --> Projects --> Skills --> Hobbies --> Contact
-    Projects -.->|external| Live[Live demos]
-    Projects -.->|external| Repo[GitHub repos]
+    Projects -.->|external| Live["Live demos"]
+    Projects -.->|external| Repo["GitHub repos"]
     Nav -.-> Resume["cv/cv.html<br/>PDF viewer"]
 ```
 
@@ -106,12 +106,12 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    Dev[Local edit] --> Commit[git commit]
-    Commit --> Push[git push origin main]
-    Push --> GH[(GitHub<br/>prince76725261/Portfolio)]
-    GH -->|webhook| V[Vercel build]
-    V --> CDN[Global edge CDN]
-    CDN --> User[portfolio-prince-singh.vercel.app]
+    Dev["Local edit"] --> Commit["git commit"]
+    Commit --> Push["git push origin main"]
+    Push --> GH[("GitHub<br/>prince76725261/Portfolio")]
+    GH -->|webhook| V["Vercel build"]
+    V --> CDN["Global edge CDN"]
+    CDN --> User["portfolio-prince-singh.vercel.app"]
 ```
 
 ---
